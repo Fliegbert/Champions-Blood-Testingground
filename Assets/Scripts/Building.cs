@@ -92,6 +92,18 @@ public class Building
         SetMaterials();
         // remove "is trigger" flag from box collider to allow for collisions with units
         _transform.GetComponent<BoxCollider>().isTrigger = false;
+
+        // update game resources: remove the cost of the building
+        // from each game resource
+        foreach (KeyValuePair<string, int> pair in _data.Cost)
+        {
+            Globals.GAME_RESOURCES[pair.Key].AddAmount(-pair.Value);
+        }
+    }
+
+    public bool CanBuy()
+    {
+        return _data.CanBuy();
     }
 
     public void CheckValidPlacement()

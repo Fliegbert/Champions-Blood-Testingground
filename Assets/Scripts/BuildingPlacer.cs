@@ -8,6 +8,12 @@ public class BuildingPlacer : MonoBehaviour
     private Ray _ray;
     private RaycastHit _raycastHit;
     private Vector3 _lastPlacementPosition;
+    private UIManager _uiManager;
+
+    private void Awake()
+    {
+        _uiManager = GetComponent<UIManager>();
+    }
 
     public void SelectPlacedBuilding(int buildingDataIndex)
     {
@@ -68,17 +74,21 @@ public class BuildingPlacer : MonoBehaviour
         _lastPlacementPosition = Vector3.zero;
     }
 
-    void _PlaceBuilding()
-    {
-        _placedBuilding.Place();
-        // keep on building the same building type
-        _PreparePlacedBuilding(_placedBuilding.DataIndex);
-    }
-
     void _CancelPlacedBuilding()
     {
         // destroy the "phantom" building
         Destroy(_placedBuilding.Transform.gameObject);
         _placedBuilding = null;
+    }
+
+    void _PlaceBuilding()
+    {
+        _placedBuilding.Place();
+        if (_placedBuilding.CanBuy())
+            _PreparePlacedBuilding(_placedBuilding.DataIndex);
+        else
+            _placedBuilding = null;
+        _uiManager.UpdateResourceTexts();
+        _uiManager.CheckBuildingButtons();
     }
 }
