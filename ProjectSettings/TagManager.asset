@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Biestmasters
   - Terrain
+  - Unit
+  - Beastmaster
   layers:
   - Default
   - TransparentFX

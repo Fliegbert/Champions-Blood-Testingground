@@ -766,6 +766,8 @@ GameObject:
   - component: {fileID: 1608687696}
   - component: {fileID: 1608687695}
   - component: {fileID: 1608687697}
+  - component: {fileID: 1608687698}
+  - component: {fileID: 1608687699}
   m_Layer: 0
   m_Name: GAME
   m_TagString: Untagged
@@ -815,6 +817,30 @@ MonoBehaviour:
   buildingButtonPrefab: {fileID: 8322415395350967019, guid: 2847df63827a9e363b34890af8a79ded, type: 3}
   resourcesUIParent: {fileID: 1157813788}
   gameResourceDisplayPrefab: {fileID: 441697649668998018, guid: 0fade63c5f0aa93b2bed50e5a3d40611, type: 3}
+--- !u!114 &1608687698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608687694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94f352ab4ef499d0d9b7471c30ce64b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1608687699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608687694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df98225b3427513f28cd72cf46567461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1647808607
 GameObject:
   m_ObjectHideFlags: 0

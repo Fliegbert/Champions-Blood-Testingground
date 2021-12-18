@@ -5,6 +5,9 @@ public class Globals
 
     public static int TERRAIN_LAYER_MASK = 1 << 3;
 
+    //List of selected Units
+    public static List<UnitManager> SELECTED_UNITS = new List<UnitManager>();
+
     public static BuildingData[] BUILDING_DATA = new BuildingData[]
     {   //from BuildingData.cs public (BuildingData(string code, int healthpoints))
         new BuildingData("Hut", 100, new Dictionary<string, int>()
@@ -23,7 +26,7 @@ public class Globals
         {
           {"gold", 150}
         }),
-        new BuildingData("Planesscape", 110, new Dictionary<string, int>()
+        new BuildingData("Savannah", 110, new Dictionary<string, int>()
         {
           {"gold", 110}
         }),
