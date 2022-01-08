@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class UnitManager : MonoBehaviour
 {
     public GameObject selectionCircle;
@@ -9,6 +10,14 @@ public class UnitManager : MonoBehaviour
     private bool _hovered = false;
     private Transform _canvas;
     private GameObject _healthbar;
+    protected BoxCollider _collider;
+    protected virtual Unit Unit { get; set; }
+
+    public void Initialize(Unit unit)
+    {
+        _collider = GetComponent<BoxCollider>();
+        Unit = unit;
+    }
 
     private void Awake()
     {
@@ -92,4 +101,6 @@ public class UnitManager : MonoBehaviour
         Destroy(_healthbar);
         _healthbar = null;
     }
+
+
 }

@@ -95,7 +95,7 @@ public class UIManager : MonoBehaviour
 
     private void _OnHoverBuildingButton(CustomEventData data)
     {
-        SetInfoPanel(data.buildingData);
+        SetInfoPanel(data.unitData);
         ShowInfoPanel(true);
     }
 
@@ -104,10 +104,10 @@ public class UIManager : MonoBehaviour
         ShowInfoPanel(false);
     }
 
-    public void SetInfoPanel(BuildingData data)
+    public void SetInfoPanel(UnitData data)
     {
         // update texts
-        if (data.code != "") _infoPanelTitleText.text = data.code;
+        if (data.unitName != "") _infoPanelTitleText.text = data.unitName;
         if (data.description != "")  _infoPanelDescriptionText.text = data.description;
         // clear resource costs and reinstantiate new ones
         foreach (Transform child in _infoPanelResourcesCostParent) Destroy(child.gameObject);
@@ -120,10 +120,9 @@ public class UIManager : MonoBehaviour
                 t = g.transform;
                 t.Find("Text").GetComponent<Text>().text = resource.amount.ToString();
                 t.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>($"Textures/GameResources/{resource.code}");
-                t.SetParent(_infoPanelResourcesCostParent);
                 if (Globals.GAME_RESOURCES[resource.code].Amount < resource.amount)
                     t.Find("Text").GetComponent<Text>().color = invalidTextColor;
-                
+                  
             }
         }
     }
