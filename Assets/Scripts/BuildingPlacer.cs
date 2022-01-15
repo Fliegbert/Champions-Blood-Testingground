@@ -87,8 +87,14 @@ public class BuildingPlacer : MonoBehaviour
         if (_placedBuilding.CanBuy())
             _PreparePlacedBuilding(_placedBuilding.DataIndex);
         else
+        {
+            EventManager.TriggerEvent("PlaceBuildingOff");
             _placedBuilding = null;
+        }
         EventManager.TriggerEvent("UpdateResourceTexts");
         EventManager.TriggerEvent("CheckBuildingButtons");
+
+        // update the dynamic nav mesh
+        Globals.UpdateNavMeshSurface();
     }
 }

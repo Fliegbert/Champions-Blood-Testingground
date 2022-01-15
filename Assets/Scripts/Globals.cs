@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEngine.AI;
+
 
 public class Globals
 {
@@ -16,5 +18,12 @@ public class Globals
         { "blood", new GameResource("Blood", 0) },
         { "bronze", new GameResource("Bronze", 100) }
     };
+
+    public static NavMeshSurface NAV_MESH_SURFACE;
+
+    public static void UpdateNavMeshSurface()
+    {
+        NAV_MESH_SURFACE.UpdateNavMesh(NAV_MESH_SURFACE.navMeshData);
+    }
 
 }
