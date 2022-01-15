@@ -11,7 +11,7 @@ public class UnitManager : MonoBehaviour
     private Transform _canvas;
     private GameObject _healthbar;
     protected BoxCollider _collider;
-    protected virtual Unit Unit { get; set; }
+    public virtual Unit Unit { get; set; }
 
     public void Initialize(Unit unit)
     {
@@ -65,6 +65,7 @@ public class UnitManager : MonoBehaviour
             h.Initialize(transform, boundingBox.height);
             h.SetPosition();
         }
+        EventManager.TriggerTypedEvent("SelectUnit", new CustomEventData(Unit));
     }
 
     public void Select() { Select(false, false); }
@@ -100,6 +101,7 @@ public class UnitManager : MonoBehaviour
         selectionCircle.SetActive(false);
         Destroy(_healthbar);
         _healthbar = null;
+        EventManager.TriggerTypedEvent("DeselectUnit", new CustomEventData(Unit));
     }
 
 

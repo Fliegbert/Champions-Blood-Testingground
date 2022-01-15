@@ -19,4 +19,5 @@ public class UnitData : ScriptableObject
                 return false;
         return true;
     }
+    public List<SkillData> skills = new List<SkillData>();
 }
