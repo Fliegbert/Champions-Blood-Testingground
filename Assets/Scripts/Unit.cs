@@ -11,12 +11,14 @@ public class Unit
     protected int _level;
     protected List<ResourceValue> _production;
     protected List<SkillManager> _skillManagers;
+    protected float _fieldOfView;
 
     public Unit(UnitData data) : this(data, new List<ResourceValue>() { }) { }
     public Unit(UnitData data, List<ResourceValue> production)
     {
         _data = data;
         _currentHealth = data.healthpoints;
+        _fieldOfView = data.fieldOfView;
 
         GameObject g = GameObject.Instantiate(data.prefab) as GameObject;
         _transform = g.transform;
@@ -51,6 +53,7 @@ public class Unit
             Globals.GAME_RESOURCES[resource.code].AddAmount(-resource.amount);
         }
         _transform.GetComponent<UnitManager>().EnableFOV();
+        _transform.GetComponent<UnitManager>().EnableFOV(_fieldOfView);
     }
 
     public bool CanBuy()

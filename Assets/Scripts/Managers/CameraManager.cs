@@ -12,6 +12,7 @@ public class CameraManager : MonoBehaviour
     private Camera _camera;
     private RaycastHit _hit;
     private Ray _ray;
+    private bool _placingBuilding;
 
     private Vector3 _forwardDir;
     private int _mouseOnScreenBorder;
@@ -62,6 +63,50 @@ public class CameraManager : MonoBehaviour
             _Zoom(Input.mouseScrollDelta.y > 0f ? 1 : -1);
     }
 
+    private void OnEnable()
+    {
+        EventManager.AddListener("PlaceBuildingOn", _OnPlaceBuildingOn);
+        EventManager.AddListener("PlaceBuildingOff", _OnPlaceBuildingOff);
+        EventManager.AddListener("MoveCamera", _OnMoveCamera);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("PlaceBuildingOn", _OnPlaceBuildingOn);
+        EventManager.RemoveListener("PlaceBuildingOff", _OnPlaceBuildingOff);
+        EventManager.RemoveListener("MoveCamera", _OnMoveCamera);
+    }
+
+    private void _OnMoveCamera(object data)
+    {
+        Vector3 pos = (Vector3) data;
+        // (recenter the indicator around the clicked point
+        // i.e. apply a -half-width/-half-height offset)
+        float indicatorW = _minimapIndicatorMesh.vertices[1].x - _minimapIndicatorMesh.vertices[0].x;
+        float indicatorH = _minimapIndicatorMesh.vertices[2].z - _minimapIndicatorMesh.vertices[0].z;
+        pos.x -= indicatorW / 2f;
+        pos.z -= indicatorH / 2f;
+        Vector3 off = transform.position - Utils.MiddleOfScreenPointToWorld();
+        Vector3 newPos = pos + off;
+        // (make sure we are above the ground before
+        // we fix the altitude)
+        newPos.y = 100f;
+        transform.position = newPos;
+
+        _FixAltitude();
+        _ComputeMinimapIndicator(false);
+    }
+
+    private void _OnPlaceBuildingOn()
+    {
+        _placingBuilding = true;
+    }
+
+    private void _OnPlaceBuildingOff()
+    {
+        _placingBuilding = false;
+    }
+
     private void _TranslateCamera(int dir)
     {
         if (dir == 0)       // top
@@ -73,6 +118,12 @@ public class CameraManager : MonoBehaviour
         else if (dir == 3)  // left
             transform.Translate(-transform.right * Time.deltaTime * translationSpeed);
 
+        _FixAltitude();
+        _ComputeMinimapIndicator(false);
+    }
+
+    private void _FixAltitude()
+    {
         // translate camera at proper altitude: cast a ray to the ground
         // and move up the hit point
         _ray = new Ray(transform.position, Vector3.up * -1000f);
@@ -81,9 +132,7 @@ public class CameraManager : MonoBehaviour
                 out _hit,
                 1000f,
                 Globals.TERRAIN_LAYER_MASK
-            ))
-            transform.position = _hit.point + Vector3.up * altitude;
-        _ComputeMinimapIndicator(false);
+            )) transform.position = _hit.point + Vector3.up * altitude;
     }
 
     public void OnMouseEnterScreenBorder(int borderIndex)
