@@ -16,6 +16,10 @@ public class CameraManager : MonoBehaviour
     private Vector3 _forwardDir;
     private int _mouseOnScreenBorder;
     private Coroutine _mouseOnScreenCoroutine;
+    public Material minimapIndicatorMaterial;
+    private float _minimapIndicatorStrokeWidth = 0.1f; // relative to indicator size
+    private Transform _minimapIndicator;
+    private Mesh _minimapIndicatorMesh;
 
     private void Awake()
     {
@@ -24,6 +28,7 @@ public class CameraManager : MonoBehaviour
         _mouseOnScreenBorder = -1;
         _mouseOnScreenCoroutine = null;
         _camera = GetComponent<Camera>();
+        _PrepareMapIndicator();
     }
 
     void Update()
@@ -78,6 +83,7 @@ public class CameraManager : MonoBehaviour
                 Globals.TERRAIN_LAYER_MASK
             ))
             transform.position = _hit.point + Vector3.up * altitude;
+        _ComputeMinimapIndicator(false);
     }
 
     public void OnMouseEnterScreenBorder(int borderIndex)
@@ -103,5 +109,74 @@ public class CameraManager : MonoBehaviour
         _camera.orthographicSize += zoomDir * Time.deltaTime * zoomSpeed;
         // clamp camera distance
         _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize, 8f, 26f);
+        _ComputeMinimapIndicator(true);
+    }
+
+    private void _PrepareMapIndicator()
+    {
+        GameObject g = new GameObject("MinimapIndicator");
+        _minimapIndicator = g.transform;
+        g.layer = 8; // put on "Minimap" layer
+        _minimapIndicator.position = Vector3.zero;
+        _minimapIndicatorMesh = _CreateMinimapIndicatorMesh();
+        MeshFilter mf = g.AddComponent<MeshFilter>();
+        mf.mesh = _minimapIndicatorMesh;
+        MeshRenderer mr = g.AddComponent<MeshRenderer>();
+        mr.material = new Material(minimapIndicatorMaterial);
+        _ComputeMinimapIndicator(true);
+    }
+
+    private Mesh _CreateMinimapIndicatorMesh()
+    {
+        Mesh m = new Mesh();
+        Vector3[] vertices = new Vector3[] {
+            Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero,
+            Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero
+        };
+        int[] triangles = new int[] {
+            0, 4, 1, 4, 5, 1,
+            0, 2, 6, 6, 4, 0,
+            6, 2, 7, 2, 3, 7,
+            5, 7, 3, 3, 1, 5
+        };
+        m.vertices = vertices;
+        m.triangles = triangles;
+        return m;
+    }
+
+    private void _ComputeMinimapIndicator(bool zooming)
+    {
+        Vector3 middle = Utils.MiddleOfScreenPointToWorld();
+        // if zooming: recompute the indicator mesh
+        if (zooming)
+        {
+            Vector3[] viewCorners = Utils.ScreenCornersToWorldPoints();
+            float w = viewCorners[1].x - viewCorners[0].x;
+            float h = viewCorners[2].z - viewCorners[0].z;
+            for (int i = 0; i < 4; i++)
+            {
+                viewCorners[i].x -= middle.x;
+                viewCorners[i].z -= middle.z;
+            }
+            Vector3[] innerCorners = new Vector3[]
+            {
+                new Vector3(viewCorners[0].x + _minimapIndicatorStrokeWidth * w, 0f, viewCorners[0].z + _minimapIndicatorStrokeWidth * h),
+                new Vector3(viewCorners[1].x - _minimapIndicatorStrokeWidth * w, 0f, viewCorners[1].z + _minimapIndicatorStrokeWidth * h),
+                new Vector3(viewCorners[2].x + _minimapIndicatorStrokeWidth * w, 0f, viewCorners[2].z - _minimapIndicatorStrokeWidth * h),
+                new Vector3(viewCorners[3].x - _minimapIndicatorStrokeWidth * w, 0f, viewCorners[3].z - _minimapIndicatorStrokeWidth * h)
+            };
+            Vector3[] allCorners = new Vector3[]
+            {
+                viewCorners[0], viewCorners[1], viewCorners[2], viewCorners[3],
+                innerCorners[0], innerCorners[1], innerCorners[2], innerCorners[3]
+            };
+            for (int i = 0; i < 8; i++)
+                allCorners[i].y = 100f;
+            _minimapIndicatorMesh.vertices = allCorners;
+            _minimapIndicatorMesh.RecalculateNormals();
+            _minimapIndicatorMesh.RecalculateBounds();
+        }
+        // move the game object at the center of the main camera screen
+        _minimapIndicator.position = middle;
     }
 }

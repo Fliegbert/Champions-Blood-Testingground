@@ -14,11 +14,11 @@ TagManager:
   - Terrain
   - Water
   - UI
+  - FOV
   - 
+  - Minimap
   - 
-  - 
-  - 
-  - 
+  - FlatTerrain
   - 
   - 
   - 

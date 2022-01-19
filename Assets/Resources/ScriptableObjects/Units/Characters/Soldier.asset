@@ -20,3 +20,5 @@ MonoBehaviour:
   cost:
   - code: gold
     amount: 30
+  fieldOfView: 20
+  skills: []

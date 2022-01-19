@@ -26,4 +26,5 @@ public class Globals
         NAV_MESH_SURFACE.UpdateNavMesh(NAV_MESH_SURFACE.navMeshData);
     }
 
+    public static int FLAT_TERRAIN_LAYER_MASK = 1 << 10;
 }

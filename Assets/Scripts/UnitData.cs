@@ -10,6 +10,7 @@ public class UnitData : ScriptableObject
     public string description;
     public GameObject prefab;
     public List<ResourceValue> cost;
+    public float fieldOfView;
 
 
     public bool CanBuy()

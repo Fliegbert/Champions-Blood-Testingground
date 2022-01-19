@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
     public GameParameters gameParameters;
     private Ray _ray;
     private RaycastHit _raycastHit;
+    public static GameManager instance;
+    public Vector3 startPosition;
 
     private void Awake()
     {
@@ -13,6 +15,13 @@ public class GameManager : MonoBehaviour
         GetComponent<DayAndNightCycler>().enabled = gameParameters.enableDayAndNightCycle;
         Globals.NAV_MESH_SURFACE = GameObject.Find("Terrain").GetComponent<NavMeshSurface>();
         Globals.UpdateNavMeshSurface();
+        _GetStartPosition();
+        GameObject.Find("FogOfWar").SetActive(gameParameters.enableFOV);
+    }
+
+    public void Start()
+    {
+        instance = this;
     }
 
     private void Update()
@@ -37,5 +46,10 @@ public class GameManager : MonoBehaviour
                         ((CharacterManager)um).MoveTo(_raycastHit.point);
             }
         }
+    }
+
+    private void _GetStartPosition()
+    {
+        startPosition = Utils.MiddleOfScreenPointToWorld();
     }
 }

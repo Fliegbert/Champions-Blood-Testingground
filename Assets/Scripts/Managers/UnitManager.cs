@@ -12,6 +12,12 @@ public class UnitManager : MonoBehaviour
     private GameObject _healthbar;
     protected BoxCollider _collider;
     public virtual Unit Unit { get; set; }
+    public GameObject fov;
+
+    public void EnableFOV()
+    {
+        fov.SetActive(true);
+    }
 
     public void Initialize(Unit unit)
     {
