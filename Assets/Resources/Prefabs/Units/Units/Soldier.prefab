@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2933979010018252186
 Transform:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionCircle: {fileID: 6772302068036678975}
-  fov: {fileID: 6526254423642134256, guid: b59fb459fafffe6d889cc83fb3917d7d, type: 3}
+  fov: {fileID: 2454719732539135180}
   agent: {fileID: 5851834769788967077}
 --- !u!195 &5851834769788967077
 NavMeshAgent:
