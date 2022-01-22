@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: a621aec063a24d69cae95a208dfe6a6e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - onDayStartSound: {instanceID: 0}
+  - onNightStartSound: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -21,6 +21,7 @@ public class CameraManager : MonoBehaviour
     private float _minimapIndicatorStrokeWidth = 0.1f; // relative to indicator size
     private Transform _minimapIndicator;
     private Mesh _minimapIndicatorMesh;
+    public Transform groundTarget;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class CameraManager : MonoBehaviour
         _mouseOnScreenCoroutine = null;
         _camera = GetComponent<Camera>();
         _PrepareMapIndicator();
+        groundTarget.position = Utils.MiddleOfScreenPointToWorld();
     }
 
     void Update()
@@ -196,7 +198,8 @@ public class CameraManager : MonoBehaviour
     private void _ComputeMinimapIndicator(bool zooming)
     {
         Vector3 middle = Utils.MiddleOfScreenPointToWorld();
-        // if zooming: recompute the indicator mesh
+        groundTarget.position = middle;
+          // if zooming: recompute the indicator mesh
         if (zooming)
         {
             Vector3[] viewCorners = Utils.ScreenCornersToWorldPoints();

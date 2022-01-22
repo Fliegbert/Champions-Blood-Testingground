@@ -13,6 +13,7 @@ public class UnitManager : MonoBehaviour
     protected BoxCollider _collider;
     public virtual Unit Unit { get; set; }
     public GameObject fov;
+    public AudioSource contextualSource;
 
     public void EnableFOV()
     {
@@ -72,6 +73,7 @@ public class UnitManager : MonoBehaviour
             h.SetPosition();
         }
         EventManager.TriggerEvent("SelectUnit", Unit);
+        contextualSource.PlayOneShot(Unit.Data.onSelectSound);
     }
 
     public void Select() { Select(false, false); }

@@ -21,4 +21,6 @@ public class UnitData : ScriptableObject
         return true;
     }
     public List<SkillData> skills = new List<SkillData>();
+    [Header("General Sounds")]
+    public AudioClip onSelectSound;
 }

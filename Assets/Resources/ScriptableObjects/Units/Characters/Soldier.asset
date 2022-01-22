@@ -20,5 +20,8 @@ MonoBehaviour:
   cost:
   - code: gold
     amount: 30
-  fieldOfView: 20
+  fieldOfView: 10
   skills: []
+  onSelectSound: {fileID: 8300000, guid: 47073c853d2ea606a8d2ff629e2d9fe7, type: 3}
+  onMoveValidSound: {fileID: 8300000, guid: d1eb4a687b0b41d9480335fd95d643bf, type: 3}
+  onMoveInvalidSound: {fileID: 8300000, guid: f05c4b07bcde5c4378ea17fc2b59ee05, type: 3}

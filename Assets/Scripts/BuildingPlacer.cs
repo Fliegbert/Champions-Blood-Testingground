@@ -13,7 +13,7 @@ public class BuildingPlacer : MonoBehaviour
     private void Start()
     {
         // instantiate headquarters at the beginning of the game
-        _placedBuilding = new Building(GameManager.instance.gameParameters.initialBuilding);
+        _placedBuilding = new Building(GameManager.instance.gameGlobalParameters.initialBuilding);
         _placedBuilding.SetPosition(GameManager.instance.startPosition);
         // link the data into the manager
         _placedBuilding.Transform.GetComponent<BuildingManager>().Initialize(_placedBuilding);
@@ -109,5 +109,6 @@ public class BuildingPlacer : MonoBehaviour
 
         // update the dynamic nav mesh
         Globals.UpdateNavMeshSurface();
+        EventManager.TriggerEvent("PlaySoundByName", "onBuildingPlacedSound");
     }
 }

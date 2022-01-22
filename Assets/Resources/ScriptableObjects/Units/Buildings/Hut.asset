@@ -23,3 +23,5 @@ MonoBehaviour:
   fieldOfView: 35
   skills:
   - {fileID: 11400000, guid: 519e3ff482f031ed9823206ea864f44c, type: 2}
+  onSelectSound: {fileID: 8300000, guid: 43e78345dc7e8a1c69efc443dfd260cd, type: 3}
+  ambientSound: {fileID: 8300000, guid: b3581eaea30060709b25bdac047d85e4, type: 3}

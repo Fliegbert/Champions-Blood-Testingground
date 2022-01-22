@@ -40,4 +40,7 @@ public class SkillData : ScriptableObject
                 break;
         }
     }
+
+    public AudioClip onStartSound;
+    public AudioClip onEndSound;
 }

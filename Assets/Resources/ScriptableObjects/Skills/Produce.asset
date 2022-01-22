@@ -20,3 +20,5 @@ MonoBehaviour:
   castTime: 1
   cooldown: 1
   sprite: {fileID: 0}
+  onStartSound: {fileID: 8300000, guid: 06cd8ed6ac3e8c555a170bd2fb2ed8d4, type: 3}
+  onEndSound: {fileID: 8300000, guid: e616b31cd32c9067e88e64f47e3f2c77, type: 3}
