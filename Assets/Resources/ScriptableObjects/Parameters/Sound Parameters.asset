@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a621aec063a24d69cae95a208dfe6a6e, type: 3}
   m_Name: Sound Parameters
   m_EditorClassIdentifier: 
-  _fieldsToShowInGame: []
+  _fieldsToShowInGame:
+  - sfxVolume
+  - musicVolume
   onDayStartSound: {fileID: 8300000, guid: 2e2eb14a7b86dadf48cfc1c73d3d8f04, type: 3}
   onNightStartSound: {fileID: 8300000, guid: cd52f8b3aca11fdacab229636600270b, type: 3}
   onBuildingPlacedSound: {fileID: 8300000, guid: ccc65dc2a4e67fc00a255e31f66df064, type: 3}

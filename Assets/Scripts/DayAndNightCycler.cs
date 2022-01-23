@@ -9,6 +9,51 @@ public class DayAndNightCycler : MonoBehaviour
     private float _rotationAngleStep;
     private Vector3 _rotationAxis;
 
+    private Coroutine _starsCoroutine = null;
+
+    private void Start()
+    {
+        // apply initial rotation on stars
+        starsTransform.rotation = Quaternion.Euler(
+            GameManager.instance.gameGlobalParameters.dayInitialRatio * 360f,
+            -30f,
+            0f
+        );
+        // compute relevant calculation parameters
+        _starsRefreshRate = 0.1f;
+        _rotationAxis = starsTransform.right;
+        _rotationAngleStep = 360f * _starsRefreshRate / GameManager.instance.gameGlobalParameters.dayLengthInSeconds;
+        if (!GameManager.instance.gameIsPaused)
+            _starsCoroutine = StartCoroutine("_UpdateStars");
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("PauseGame", _OnPauseGame);
+        EventManager.AddListener("ResumeGame", _OnResumeGame);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("PauseGame", _OnPauseGame);
+        EventManager.RemoveListener("ResumeGame", _OnResumeGame);
+    }
+
+    private void _OnPauseGame()
+    {
+        if (_starsCoroutine != null)
+        {
+            StopCoroutine(_starsCoroutine);
+            _starsCoroutine = null;
+        }
+    }
+
+    private void _OnResumeGame()
+    {
+        if (_starsCoroutine == null)
+            _starsCoroutine = StartCoroutine("_UpdateStars");
+    }
+
     private IEnumerator _UpdateStars()
    {
        float rotation = 0f;

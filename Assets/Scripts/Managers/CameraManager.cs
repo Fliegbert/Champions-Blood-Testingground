@@ -36,6 +36,7 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.instance.gameIsPaused) return;
         if (Input.GetKey(KeyCode.UpArrow))
             _TranslateCamera(0);
         if (Input.GetKey(KeyCode.RightArrow))

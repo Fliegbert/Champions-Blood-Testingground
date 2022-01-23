@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     private RaycastHit _raycastHit;
     public static GameManager instance;
     public Vector3 startPosition;
+    [HideInInspector]
+    public bool gameIsPaused;
+    public GameObject fov;
 
     private void Awake()
     {
@@ -21,6 +24,8 @@ public class GameManager : MonoBehaviour
         GameObject.Find("FogOfWar").SetActive(gameGlobalParameters.enableFOV);
 
         _GetStartPosition();
+        gameIsPaused = false;
+        fov.SetActive(gameGlobalParameters.enableFOV);
     }
 
     public void Start()
@@ -40,7 +45,34 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gameIsPaused) return;
         _CheckUnitsNavigation();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("PauseGame", _OnPauseGame);
+        EventManager.AddListener("ResumeGame", _OnResumeGame);
+        EventManager.AddListener("UpdateGameParameter:enableDayAndNightCycle", _OnUpdateDayAndNightCycle);
+        EventManager.AddListener("UpdateGameParameter:enableFOV", _OnUpdateFOV);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("PauseGame", _OnPauseGame);
+        EventManager.RemoveListener("ResumeGame", _OnResumeGame);
+        EventManager.RemoveListener("UpdateGameParameter:enableDayAndNightCycle", _OnUpdateDayAndNightCycle);
+        EventManager.RemoveListener("UpdateGameParameter:enableFOV", _OnUpdateFOV);
+    }
+
+    private void _OnPauseGame()
+    {
+        gameIsPaused = true;
+    }
+
+    private void _OnResumeGame()
+    {
+        gameIsPaused = false;
     }
 
     private void _CheckUnitsNavigation()
@@ -65,5 +97,16 @@ public class GameManager : MonoBehaviour
     private void _GetStartPosition()
     {
         startPosition = Utils.MiddleOfScreenPointToWorld();
+    }
+
+    private void _OnUpdateDayAndNightCycle(object data)
+    {
+        bool dayAndNightIsOn = (bool)data;
+        GetComponent<DayAndNightCycler>().enabled = dayAndNightIsOn;
+    }
+    private void _OnUpdateFOV(object data)
+    {
+        bool fovIsOn = (bool)data;
+        fov.SetActive(fovIsOn);
     }
 }
