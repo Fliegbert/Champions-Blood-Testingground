@@ -15,6 +15,8 @@ public class UnitManager : MonoBehaviour
     public GameObject fov;
     public AudioSource contextualSource;
     public int ownerMaterialSlotIndex = 0;
+    private bool _selected = false;
+    public bool IsSelected { get => _selected; }
 
     public void SetOwnerMaterial(int owner)
     {
@@ -124,6 +126,7 @@ public class UnitManager : MonoBehaviour
         Destroy(_healthbar);
         _healthbar = null;
         EventManager.TriggerEvent("DeselectUnit", Unit);
+        _selected = false;
     }
 
     public void EnableFOV(float size)
@@ -132,6 +135,7 @@ public class UnitManager : MonoBehaviour
         MeshRenderer mr = fov.GetComponent<MeshRenderer>();
         mr.material = new Material(mr.material);
         StartCoroutine(_ScalingFOV(size));
+        _selected = true;
     }
 
     private IEnumerator _ScalingFOV(float size)

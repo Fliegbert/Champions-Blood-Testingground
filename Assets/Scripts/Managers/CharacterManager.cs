@@ -12,17 +12,20 @@ public class CharacterManager : UnitManager
         set { _character = value is Character ? (Character)value : null; }
     }
 
-    public void MoveTo(Vector3 targetPosition)
+    public bool MoveTo(Vector3 targetPosition, bool playSound = true)
     {
         NavMeshPath path = new NavMeshPath();
         agent.CalculatePath(targetPosition, path);
         if (path.status == NavMeshPathStatus.PathInvalid)
         {
-            contextualSource.PlayOneShot(((CharacterData)Unit.Data).onMoveInvalidSound);
-            return;
+            if (playSound)
+                contextualSource.PlayOneShot(((CharacterData)Unit.Data).onMoveInvalidSound);
+            return false;
         }
 
         agent.destination = targetPosition;
-        contextualSource.PlayOneShot(((CharacterData)Unit.Data).onMoveValidSound);
+        if (playSound)
+            contextualSource.PlayOneShot(((CharacterData)Unit.Data).onMoveValidSound);
+        return true;
     }
 }

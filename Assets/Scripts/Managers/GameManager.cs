@@ -17,9 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject fov;
 
     [HideInInspector]
-    public List<Unit> ownedProducingUnits = new List<Unit>();
-    private float _producingRate = 3f; // in seconds
-    private Coroutine _producingResourcesCoroutine = null;
+    public float producingRate = 3f; // in seconds
 
 
     private void Awake()
@@ -41,13 +39,11 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         instance = this;
-        _producingResourcesCoroutine = StartCoroutine("_ProducingResources");
     }
 
     private void Update()
     {
         if (gameIsPaused) return;
-        _CheckUnitsNavigation();
     }
 
     private void OnEnable()
@@ -69,37 +65,11 @@ public class GameManager : MonoBehaviour
     private void _OnPauseGame()
     {
         gameIsPaused = true;
-        if (_producingResourcesCoroutine != null)
-        {
-            StopCoroutine(_producingResourcesCoroutine);
-            _producingResourcesCoroutine = null;
-        }
     }
 
     private void _OnResumeGame()
     {
         gameIsPaused = false;
-        if (_producingResourcesCoroutine == null)
-            _producingResourcesCoroutine = StartCoroutine("_ProducingResources");
-    }
-
-    private void _CheckUnitsNavigation()
-    {
-        if (Globals.SELECTED_UNITS.Count > 0 && Input.GetMouseButtonUp(1))
-        {
-            _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(
-                _ray,
-                out _raycastHit,
-                1000f,
-                Globals.TERRAIN_LAYER_MASK
-            ))
-            {
-                foreach (UnitManager um in Globals.SELECTED_UNITS)
-                    if (um.GetType() == typeof(CharacterManager))
-                        ((CharacterManager)um).MoveTo(_raycastHit.point);
-            }
-        }
     }
 
     private void _GetStartPosition()
@@ -120,19 +90,8 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-#if !UNITY_EDITOR
+//#if !UNITY_EDITOR
         DataHandler.SaveGameData();
-#endif
-    }
-
-    private IEnumerator _ProducingResources()
-    {
-        while (true)
-        {
-            foreach (Unit unit in ownedProducingUnits)
-                unit.ProduceResources();
-            EventManager.TriggerEvent("UpdateResourceTexts");
-            yield return new WaitForSeconds(_producingRate);
-        }
+//#endif
     }
 }
