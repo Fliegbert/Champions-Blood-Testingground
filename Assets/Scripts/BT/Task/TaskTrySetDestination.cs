@@ -23,9 +23,27 @@ public class TaskTrySetDestinationOrTarget : Node
                 _ray,
                 out _raycastHit,
                 1000f,
+                Globals.UNIT_MASK
+            ))
+            {
+                UnitManager um = _raycastHit.collider.GetComponent<UnitManager>();
+                if (um != null)
+                {
+                    Parent.Parent.SetData("currentTarget", _raycastHit.transform);
+                    ClearData("destinationPoint");
+                    _state = NodeState.SUCCESS;
+                    return _state;
+                }
+            }
+
+            else if (Physics.Raycast(
+                _ray,
+                out _raycastHit,
+                1000f,
                 Globals.TERRAIN_LAYER_MASK
             ))
             {
+                ClearData("currentTarget");
                 Parent.Parent.SetData("destinationPoint", _raycastHit.point);
                 _state = NodeState.SUCCESS;
                 return _state;

@@ -2,48 +2,48 @@ using UnityEngine;
 
 public class Healthbar : MonoBehaviour
 {
-    //rectTransform public variable is assigned in the inspector
     public RectTransform rectTransform;
 
+    private Transform _camera;
     private Transform _target;
+    private bool _reupdate;
+    private float _yOffset;
+    private Vector3 _lastCameraPosition;
     private Vector3 _lastTargetPosition;
     private Vector2 _pos;
-    private float _yOffset;
-    private Transform _camera;
-    private Vector3 _lastCameraPosition;
 
     private void Awake()
     {
         _camera = Camera.main.transform;
     }
 
-    // Function Purpose: if the targets position is not the _target position anymore or its _lastTargetPosition, use the buildings setposition function
     private void Update()
     {
         if (
             _lastCameraPosition == _camera.position &&
-            _target && _lastTargetPosition == _target.position
+            (
+                !_reupdate ||
+                (_target && _lastTargetPosition == _target.position)
+            )
         )
             return;
         SetPosition();
     }
 
-    //Function Purpose: Link the data into the BuildingManager.
-    public void Initialize(Transform target, float yOffset)
+    public void Initialize(Transform target, bool reupdate, float yOffset)
     {
         _target = target;
+        _reupdate = reupdate;
         _yOffset = yOffset;
     }
 
-    //Function Purpose: set the position of the healthbar and also fills the _lastTargetPosition variable
     public void SetPosition()
     {
         if (!_target) return;
         _pos = Camera.main.WorldToScreenPoint(_target.position);
-        //sets the height of the healthbar  + the yOffset
         _pos.y += _yOffset;
         rectTransform.anchoredPosition = _pos;
-        _lastTargetPosition = _target.position;
         _lastCameraPosition = _camera.position;
+        _lastTargetPosition = _target.position;
     }
 }

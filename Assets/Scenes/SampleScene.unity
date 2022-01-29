@@ -3392,7 +3392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &940463709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5614,19 +5614,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ea738490154fc099d8d8efd3758a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invalidTextColor: {r: 1, g: 0.22745098, b: 0, a: 0}
   buildingMenu: {fileID: 1583412559}
   buildingButtonPrefab: {fileID: 8322415395350967019, guid: 2847df63827a9e363b34890af8a79ded, type: 3}
   resourcesUIParent: {fileID: 1157813788}
   gameResourceDisplayPrefab: {fileID: 441697649668998018, guid: 0fade63c5f0aa93b2bed50e5a3d40611, type: 3}
   gameResourceCostPrefab: {fileID: 1033251695779356596, guid: 5aa8a7318888649f0a81207da8341642, type: 3}
-  invalidTextColor: {r: 1, g: 0.22745098, b: 0, a: 0}
-  selectedUnitMenu: {fileID: 2062602892}
-  unitSkillButtonPrefab: {fileID: 6847281295157976875, guid: bb9501bf50477d8a8b82ca8d54fe15a2, type: 3}
-  placedBuildingProductionRectTransform: {fileID: 0}
   infoPanel: {fileID: 411802740}
+  selectedUnitMenu: {fileID: 2062602892}
+  selectedUnitMenuUpgradeButton: {fileID: 1836767425}
+  selectedUnitMenuDestroyButton: {fileID: 693555574}
+  unitSkillButtonPrefab: {fileID: 6847281295157976875, guid: bb9501bf50477d8a8b82ca8d54fe15a2, type: 3}
+  selectionGroupsParent: {fileID: 1381377542}
   selectedUnitsListParent: {fileID: 1642547076}
   selectedUnitDisplayPrefab: {fileID: 7411466267448023981, guid: abfed8575cbdd41c1852b8ce1b0123dc, type: 3}
-  selectionGroupsParent: {fileID: 1381377542}
+  placedBuildingProductionRectTransform: {fileID: 940463709}
   gameSettingsPanel: {fileID: 789564183}
   gameSettingsMenusParent: {fileID: 455553699}
   gameSettingsContentName: {fileID: 447611528}
@@ -5673,10 +5675,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameGlobalParameters: {fileID: 11400000, guid: 31d6e7c30823fbb908390868968b33d6, type: 2}
-  gamePlayersParameters: {fileID: 11400000, guid: 8116080282eeee6de8dd7d6661cadb25, type: 2}
+  gamePlayersParameters: {fileID: 11400000, guid: f4bcb9687497e659d9ef9670ae53c6fc, type: 2}
   startPosition: {x: 0, y: 0, z: 0}
   gameIsPaused: 0
   fov: {fileID: 607328530}
+  producingRate: 3
 --- !u!114 &1608687701
 MonoBehaviour:
   m_ObjectHideFlags: 0

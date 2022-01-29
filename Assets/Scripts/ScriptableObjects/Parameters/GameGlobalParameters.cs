@@ -4,25 +4,23 @@ using UnityEngine;
 public class GameGlobalParameters : GameParameters
 {
     public override string GetParametersName() => "Global";
+
+    public delegate int ResourceProductionFunc(float distance);
+
     [Header("Day and Night")]
     public bool enableDayAndNightCycle;
     public float dayLengthInSeconds;
     public float dayInitialRatio;
 
-    [Header("Initialization")]
+    [Header("Units")]
     public BuildingData initialBuilding;
 
-    [Header("FOV")]
-    public bool enableFOV;
-
+    [Header("Units production")]
     public int baseGoldProduction;
     public int bonusGoldProductionPerBuilding;
     public float goldBonusRange;
     public float woodProductionRange;
     public float stoneProductionRange;
-
-    public delegate int ResourceProductionFunc(float distance);
-
     [HideInInspector]
     public ResourceProductionFunc woodProductionFunc = (float distance) =>
     {
@@ -33,4 +31,7 @@ public class GameGlobalParameters : GameParameters
     {
         return Mathf.CeilToInt(2 * 1f / distance);
     };
+
+    [Header("FOV")]
+    public bool enableFOV;
 }

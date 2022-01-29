@@ -1,68 +1,35 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
 public class BuildingPlacer : MonoBehaviour
 {
-    //to find out which building is picked
     private Building _placedBuilding = null;
+
     private Ray _ray;
     private RaycastHit _raycastHit;
     private Vector3 _lastPlacementPosition;
-    private UIManager _uiManager;
 
     private void Start()
     {
+        // instantiate our headquarters
         SpawnBuilding(
             GameManager.instance.gameGlobalParameters.initialBuilding,
             GameManager.instance.gamePlayersParameters.myPlayerId,
-            GameManager.instance.startPosition,
-            new List<ResourceValue>()
-            {
-                new ResourceValue(InGameResource.Gold, 5),
-                //new ResourceValue(InGameResource.Wood, 3),
-                //new ResourceValue(InGameResource.Stone, 2),
-            }
+            GameManager.instance.startPosition
         );
-    }
 
-    public void SpawnBuilding(BuildingData data, int owner, Vector3 position)
-    {
-        SpawnBuilding(data, owner, position, new List<ResourceValue>() { });
-    }
-    public void SpawnBuilding(BuildingData data, int owner, Vector3 position, List<ResourceValue> production)
-    {
-        // keep a reference to the previously placed building, if there is one
-        Building prevPlacedBuilding = _placedBuilding;
-
-        // instantiate building
-        _placedBuilding = new Building(data, owner, production);
-        _placedBuilding.SetPosition(position);
-
-        // ====> (we remove the Initialize() call)
-
-        // finish up the placement
-        _PlaceBuilding();
-        // make sure we get rid of the placed building placeholder
-        _CancelPlacedBuilding();
-
-        // restore the previous state
-        _placedBuilding = prevPlacedBuilding;
-    }
-
-    private void Awake()
-    {
-        _uiManager = GetComponent<UIManager>();
-    }
-
-    public void SelectPlacedBuilding(int buildingDataIndex)
-    {
-        _PreparePlacedBuilding(buildingDataIndex);
+        SpawnBuilding(
+            GameManager.instance.gameGlobalParameters.initialBuilding,
+            1 - GameManager.instance.gamePlayersParameters.myPlayerId,
+            GameManager.instance.startPosition + new Vector3(-32f, 0f, 0f)
+        );
     }
 
     void Update()
     {
         if (GameManager.instance.gameIsPaused) return;
+
         if (_placedBuilding != null)
         {
             if (Input.GetKeyUp(KeyCode.Escape))
@@ -84,23 +51,46 @@ public class BuildingPlacer : MonoBehaviour
                 {
                     _placedBuilding.CheckValidPlacement();
                     Dictionary<InGameResource, int> prod = _placedBuilding.ComputeProduction();
-                    EventManager.TriggerEvent(
-                        "UpdatePlacedBuildingProduction",
-                        new object[] { prod, _raycastHit.point }
-                    );
+                    EventManager.TriggerEvent("UpdatePlacedBuildingProduction", new object[] { prod, _raycastHit.point });
                 }
                 _lastPlacementPosition = _raycastHit.point;
             }
-               //from Building class
+
             if (
                 _placedBuilding.HasValidPlacement &&
-                Input.GetMouseButtonDown(0) &&
+                Input.GetMouseButtonUp(0) &&
                 !EventSystem.current.IsPointerOverGameObject()
             )
             {
                 _PlaceBuilding();
             }
+
+            if (Input.mouseScrollDelta.y != 0f)
+                _placedBuilding.Transform.Rotate(
+                    Vector3.up,
+                    Mathf.Sign(Input.mouseScrollDelta.y) * 15f,
+                    Space.World
+                );
         }
+    }
+
+    public void SpawnBuilding(BuildingData data, int owner, Vector3 position)
+    {
+        SpawnBuilding(data, owner, position, new List<ResourceValue>() { });
+    }
+    public void SpawnBuilding(BuildingData data, int owner, Vector3 position, List<ResourceValue> production)
+    {
+        // keep a reference to the previously placed building, if there is one
+        Building prevPlacedBuilding = _placedBuilding;
+
+        // instantiate building
+        _placedBuilding = new Building(data, owner, production);
+        _placedBuilding.SetPosition(position);
+        // finish up the placement
+        _PlaceBuilding(false);
+
+        // restore the previous state
+        _placedBuilding = prevPlacedBuilding;
     }
 
     void _PreparePlacedBuilding(int buildingDataIndex)
@@ -114,7 +104,6 @@ public class BuildingPlacer : MonoBehaviour
             Globals.BUILDING_DATA[buildingDataIndex],
             GameManager.instance.gamePlayersParameters.myPlayerId
         );
-        // ====> (we remove the Initialize() call)
         _placedBuilding = building;
         _lastPlacementPosition = Vector3.zero;
         EventManager.TriggerEvent("PlaceBuildingOn");
@@ -125,6 +114,7 @@ public class BuildingPlacer : MonoBehaviour
         // destroy the "phantom" building
         Destroy(_placedBuilding.Transform.gameObject);
         _placedBuilding = null;
+        EventManager.TriggerEvent("PlaceBuildingOff");
     }
 
     void _PlaceBuilding(bool canChain = true)
@@ -141,11 +131,14 @@ public class BuildingPlacer : MonoBehaviour
                 _placedBuilding = null;
             }
         }
+        EventManager.TriggerEvent("PlaySoundByName", "onBuildingPlacedSound");
         EventManager.TriggerEvent("UpdateResourceTexts");
         EventManager.TriggerEvent("CheckBuildingButtons");
-
-        // update the dynamic nav mesh
         Globals.UpdateNavMeshSurface();
-        EventManager.TriggerEvent("PlaySoundByName", "onBuildingPlacedSound");
+    }
+
+    public void SelectPlacedBuilding(int buildingDataIndex)
+    {
+        _PreparePlacedBuilding(buildingDataIndex);
     }
 }

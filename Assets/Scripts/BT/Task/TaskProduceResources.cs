@@ -1,4 +1,3 @@
-
 using BehaviorTree;
 
 public class TaskProduceResources : Node

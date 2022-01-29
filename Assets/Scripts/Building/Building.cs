@@ -28,6 +28,17 @@ public class Building : Unit
 
         _placement = BuildingPlacement.VALID;
         SetMaterials();
+
+        if (data.ambientSound != null)
+        {
+            if (_buildingManager.ambientSource != null)
+            {
+                _buildingManager.ambientSource.clip = data.ambientSound;
+                _buildingManager.ambientSource.Play();
+            }
+            else
+                Debug.LogWarning($"'{data.unitName}' prefab is missing an ambient audio source!");
+        }
     }
 
     public void SetMaterials() { SetMaterials(_placement); }
@@ -62,6 +73,10 @@ public class Building : Unit
         _placement = BuildingPlacement.FIXED;
         // change building materials
         SetMaterials();
+        // activate particles if there are any
+        Transform particlesChild = _transform.Find("Particles");
+        if (particlesChild)
+            particlesChild.gameObject.SetActive(true);
     }
 
     public void CheckValidPlacement()
@@ -79,10 +94,8 @@ public class Building : Unit
         get
         {
             for (int i = 0; i < Globals.BUILDING_DATA.Length; i++)
-            {
                 if (Globals.BUILDING_DATA[i].code == _data.code)
                     return i;
-            }
             return -1;
         }
     }

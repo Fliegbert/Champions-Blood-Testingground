@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4645358110833658676}
   - component: {fileID: 8948881667092987260}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SelectionCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ Projector:
   m_Material: {fileID: 2100000, guid: 5fb13608e02cfe404ae0c30d25dd7d01, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 55
 --- !u!1 &3014199133941896388
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 4607451687849582939}
   - component: {fileID: 1973896086233760788}
   - component: {fileID: 8903862039053828041}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Mesh
   m_TagString: Beastmaster
   m_Icon: {fileID: 0}
@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: -1960158427126337894}
   - component: {fileID: 7158982598743965434}
   - component: {fileID: 3189345833736408880}
+  - component: {fileID: 412492879800977133}
   m_Layer: 12
   m_Name: Hut
   m_TagString: Unit
@@ -342,6 +343,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &412492879800977133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389129515186123553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b89d86d33860a36a9ba16560ebf6bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8395652782133128499
 GameObject:
   m_ObjectHideFlags: 0

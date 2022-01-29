@@ -1,23 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class BuildingManager : UnitManager
 {
     public AudioSource ambientSource;
-    private int _nCollisions = 0;
+
     private Building _building;
     public override Unit Unit
     {
         get { return _building; }
         set { _building = value is Building ? (Building)value : null; }
     }
-
-
-    public void Initialize(Building building)
-    {
-        _collider = GetComponent<BoxCollider>();
-        _building = building;
-    }
+    private int _nCollisions = 0;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -39,17 +32,12 @@ public class BuildingManager : UnitManager
         if (_building.IsFixed) return false;
         bool validPlacement = HasValidPlacement();
         if (!validPlacement)
-        {
             _building.SetMaterials(BuildingPlacement.INVALID);
-        }
         else
-        {
             _building.SetMaterials(BuildingPlacement.VALID);
-        }
         return validPlacement;
     }
 
-    // prevent player from placing buildings on steep slopes by project a ray from each of the 4 bottom corners of the phantom box collider and check the terrain at a relatively close distance
     public bool HasValidPlacement()
     {
         if (_nCollisions > 0) return false;
@@ -61,10 +49,10 @@ public class BuildingManager : UnitManager
         float bottomHeight = c.y - e.y + 0.5f;
         Vector3[] bottomCorners = new Vector3[]
         {
-            new Vector3(c.x - e.x, bottomHeight, c.z - e.z),
-            new Vector3(c.x - e.x, bottomHeight, c.z + e.z),
-            new Vector3(c.x + e.x, bottomHeight, c.z - e.z),
-            new Vector3(c.x + e.x, bottomHeight, c.z + e.z)
+        new Vector3(c.x - e.x, bottomHeight, c.z - e.z),
+        new Vector3(c.x - e.x, bottomHeight, c.z + e.z),
+        new Vector3(c.x + e.x, bottomHeight, c.z - e.z),
+        new Vector3(c.x + e.x, bottomHeight, c.z + e.z)
         };
         // cast a small ray beneath the corner to check for a close ground
         // (if at least two are not valid, then placement is invalid)
@@ -85,5 +73,10 @@ public class BuildingManager : UnitManager
     protected override bool IsActive()
     {
         return _building.IsFixed;
+    }
+
+    protected override bool IsMovable()
+    {
+        return false;
     }
 }
