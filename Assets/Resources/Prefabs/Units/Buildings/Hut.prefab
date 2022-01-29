@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: -1960158427126337894}
   - component: {fileID: 7158982598743965434}
   - component: {fileID: 3189345833736408880}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hut
   m_TagString: Unit
   m_Icon: {fileID: 0}
@@ -214,6 +214,7 @@ MonoBehaviour:
   selectionCircle: {fileID: 1055464773368937163}
   fov: {fileID: 8395652782133128499}
   contextualSource: {fileID: 3189345833736408880}
+  ownerMaterialSlotIndex: 0
   ambientSource: {fileID: 3189345833736408880}
 --- !u!208 &-1960158427126337894
 NavMeshObstacle:
@@ -254,7 +255,7 @@ AudioSource:
   m_GameObject: {fileID: 3389129515186123553}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3935137070524616904, guid: 2bc3da66e1559647fab3efad512a448f, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.42

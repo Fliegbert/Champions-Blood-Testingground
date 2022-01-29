@@ -1,10 +1,10 @@
 [System.Serializable]
 public class ResourceValue
 {
-    public string code = "";
+    public InGameResource code;
     public int amount = 0;
 
-    public ResourceValue(string code, int amount)
+    public ResourceValue(InGameResource code, int amount)
     {
         this.code = code;
         this.amount = amount;

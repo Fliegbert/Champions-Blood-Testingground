@@ -23,4 +23,5 @@ public class UnitData : ScriptableObject
     public List<SkillData> skills = new List<SkillData>();
     [Header("General Sounds")]
     public AudioClip onSelectSound;
+    public InGameResource[] canProduce;
 }

@@ -15,8 +15,13 @@ MonoBehaviour:
   _fieldsToShowInGame:
   - enableDayAndNightCycle
   - enableFOV
-  enableDayAndNightCycle: 1
+  enableDayAndNightCycle: 0
   dayLengthInSeconds: 60
   dayInitialRatio: 0.2
-  initialBuilding: {fileID: 11400000, guid: 1b2ef8192bf812fefbb8065ecfdf023f, type: 2}
+  initialBuilding: {fileID: 0}
   enableFOV: 1
+  baseGoldProduction: 5
+  bonusGoldProductionPerBuilding: 2
+  goldBonusRange: 10
+  woodProductionRange: 10
+  stoneProductionRange: 10

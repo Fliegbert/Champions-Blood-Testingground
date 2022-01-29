@@ -14,4 +14,23 @@ public class GameGlobalParameters : GameParameters
 
     [Header("FOV")]
     public bool enableFOV;
+
+    public int baseGoldProduction;
+    public int bonusGoldProductionPerBuilding;
+    public float goldBonusRange;
+    public float woodProductionRange;
+    public float stoneProductionRange;
+
+    public delegate int ResourceProductionFunc(float distance);
+
+    [HideInInspector]
+    public ResourceProductionFunc woodProductionFunc = (float distance) =>
+    {
+        return Mathf.CeilToInt(10 * 1f / distance);
+    };
+    [HideInInspector]
+    public ResourceProductionFunc stoneProductionFunc = (float distance) =>
+    {
+        return Mathf.CeilToInt(2 * 1f / distance);
+    };
 }

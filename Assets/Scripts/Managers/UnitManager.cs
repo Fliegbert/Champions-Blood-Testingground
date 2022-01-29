@@ -14,6 +14,15 @@ public class UnitManager : MonoBehaviour
     public virtual Unit Unit { get; set; }
     public GameObject fov;
     public AudioSource contextualSource;
+    public int ownerMaterialSlotIndex = 0;
+
+    public void SetOwnerMaterial(int owner)
+    {
+        Color playerColor = GameManager.instance.gamePlayersParameters.players[owner].color;
+        Material[] materials = transform.Find("Mesh").GetComponent<Renderer>().materials;
+        materials[ownerMaterialSlotIndex].color = playerColor;
+        transform.Find("Mesh").GetComponent<Renderer>().materials = materials;
+    }
 
     public void EnableFOV()
     {
@@ -43,12 +52,17 @@ public class UnitManager : MonoBehaviour
 
     private void Update()
     {
-        if (_hovered && Input.GetMouseButtonDown(0) && IsActive())
+        if (_hovered && Input.GetMouseButtonDown(0) && IsActive() && _IsMyUnit())
         Select(
             true,
             Input.GetKey(KeyCode.LeftShift) ||
             Input.GetKey(KeyCode.RightShift)
         );
+    }
+
+    private bool _IsMyUnit()
+    {
+        return Unit.Owner == GameManager.instance.gamePlayersParameters.myPlayerId;
     }
 
     protected virtual bool IsActive()

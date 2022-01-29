@@ -1,16 +1,26 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public GameGlobalParameters gameGlobalParameters;
+    public GamePlayersParameters gamePlayersParameters;
     private Ray _ray;
     private RaycastHit _raycastHit;
     public static GameManager instance;
     public Vector3 startPosition;
+
     [HideInInspector]
     public bool gameIsPaused;
     public GameObject fov;
+
+    [HideInInspector]
+    public List<Unit> ownedProducingUnits = new List<Unit>();
+    private float _producingRate = 3f; // in seconds
+    private Coroutine _producingResourcesCoroutine = null;
+
 
     private void Awake()
     {
@@ -31,16 +41,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         instance = this;
-
-        GameParameters[] gameParametersList =
-          Resources.LoadAll<GameParameters>("ScriptableObjects/Parameters");
-        foreach (GameParameters parameters in gameParametersList)
-        {
-            Debug.Log(parameters.GetParametersName());
-            Debug.Log("> Fields shown in-game:");
-            foreach (string fieldName in parameters.FieldsToShowInGame)
-                Debug.Log($"    {fieldName}");
-        }
+        _producingResourcesCoroutine = StartCoroutine("_ProducingResources");
     }
 
     private void Update()
@@ -68,11 +69,18 @@ public class GameManager : MonoBehaviour
     private void _OnPauseGame()
     {
         gameIsPaused = true;
+        if (_producingResourcesCoroutine != null)
+        {
+            StopCoroutine(_producingResourcesCoroutine);
+            _producingResourcesCoroutine = null;
+        }
     }
 
     private void _OnResumeGame()
     {
         gameIsPaused = false;
+        if (_producingResourcesCoroutine == null)
+            _producingResourcesCoroutine = StartCoroutine("_ProducingResources");
     }
 
     private void _CheckUnitsNavigation()
@@ -108,5 +116,23 @@ public class GameManager : MonoBehaviour
     {
         bool fovIsOn = (bool)data;
         fov.SetActive(fovIsOn);
+    }
+
+    private void OnApplicationQuit()
+    {
+#if !UNITY_EDITOR
+        DataHandler.SaveGameData();
+#endif
+    }
+
+    private IEnumerator _ProducingResources()
+    {
+        while (true)
+        {
+            foreach (Unit unit in ownedProducingUnits)
+                unit.ProduceResources();
+            EventManager.TriggerEvent("UpdateResourceTexts");
+            yield return new WaitForSeconds(_producingRate);
+        }
     }
 }
