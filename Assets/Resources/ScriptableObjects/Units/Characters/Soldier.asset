@@ -14,14 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: soldier
   unitName: Soldier
-  healthpoints: 30
   description: A simple unit.
+  healthpoints: 30
   prefab: {fileID: 6217752193526717191, guid: beb846defff2c82308eec3f363388772, type: 3}
+  sprite: {fileID: 0}
   cost:
-  - code: gold
+  - code: 0
     amount: 30
-  fieldOfView: 10
+  canProduce: 
   skills: []
+  fieldOfView: 15
+  attackRange: 2
+  attackDamage: 20
+  attackRate: 1
   onSelectSound: {fileID: 8300000, guid: 47073c853d2ea606a8d2ff629e2d9fe7, type: 3}
   onMoveValidSound: {fileID: 8300000, guid: d1eb4a687b0b41d9480335fd95d643bf, type: 3}
   onMoveInvalidSound: {fileID: 8300000, guid: f05c4b07bcde5c4378ea17fc2b59ee05, type: 3}

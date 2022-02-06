@@ -54,6 +54,7 @@ public class DayAndNightCycler : MonoBehaviour
             _starsCoroutine = StartCoroutine("_UpdateStars");
     }
 
+    //For sound indicator
     private IEnumerator _UpdateStars()
    {
        float rotation = 0f;

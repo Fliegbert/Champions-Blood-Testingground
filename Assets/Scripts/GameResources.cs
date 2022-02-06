@@ -3,12 +3,14 @@ public class GameResource
     private string _name;
     private int _currentAmount;
 
+    //For Setting up GameResources(at globals)
     public GameResource(string name, int initialAmount)
     {
         _name = name;
         _currentAmount = initialAmount;
     }
 
+    //Function for adding Resources
     public void AddAmount(int value)
     {
         _currentAmount += value;

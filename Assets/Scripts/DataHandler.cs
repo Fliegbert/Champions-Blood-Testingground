@@ -4,7 +4,7 @@ public static class DataHandler
 {
     public static void LoadGameData()
     {
-        // load building data
+        // load building data with ScriptableObjects
         Globals.BUILDING_DATA = Resources.LoadAll<BuildingData>("ScriptableObjects/Units/Buildings") as BuildingData[];
 
         // load game parameters

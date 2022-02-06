@@ -5,23 +5,36 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+    //Parameters to fill in, in the inspector
+    //The instance is an instance of this class so it can be used via singleton pattern in other classes
+    //This is why static
     public GameGlobalParameters gameGlobalParameters;
     public GamePlayersParameters gamePlayersParameters;
     private Ray _ray;
     private RaycastHit _raycastHit;
     public static GameManager instance;
     public Vector3 startPosition;
+    public float canvasScaleFactor;
 
     [HideInInspector]
     public bool gameIsPaused;
     public GameObject fov;
 
+    //In Behaviour for producing rate of tthe buildings
     [HideInInspector]
     public float producingRate = 3f; // in seconds
 
+    //Function Purpose: Load the game trough Datahandler,
+    //En/-Disables Day and Night Cicler depending on the gsmeGlobalParameters
+    //NavMeshSurface = Terrain and updates NavMeshSurface (from Globals)
+    //Gets FogOfWar and Enables/Disables it depending on the gameGlobalParameters
+    //Gets the startPosition trough _GetStartPosition
+    //Sets the fov depending on gameGlobalParameters
 
     private void Awake()
     {
+        canvasScaleFactor = GameObject.Find("Canvas").GetComponent<Canvas>().scaleFactor;
+
         DataHandler.LoadGameData();
         GetComponent<DayAndNightCycler>().enabled = gameGlobalParameters.enableDayAndNightCycle;
 
@@ -36,6 +49,7 @@ public class GameManager : MonoBehaviour
         fov.SetActive(gameGlobalParameters.enableFOV);
     }
 
+    //Gamemanager object instance = diese klasse
     public void Start()
     {
         instance = this;
@@ -90,8 +104,8 @@ public class GameManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-//#if !UNITY_EDITOR
+#if !UNITY_EDITOR
         DataHandler.SaveGameData();
-//#endif
+#endif
     }
 }

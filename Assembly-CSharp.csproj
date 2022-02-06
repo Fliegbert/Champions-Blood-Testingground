@@ -47,16 +47,63 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BuildingData.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
-     <Compile Include="Assets\Scripts\BuildingPlacer.cs" />
+     <Compile Include="Assets\Scripts\UI\Healthbar.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Data\UnitData.cs" />
+     <Compile Include="Assets\Scripts\UI\UnitsSelection.cs" />
+     <Compile Include="Assets\Scripts\BT\Task\TaskMoveToDestination.cs" />
+     <Compile Include="Assets\Scripts\BT\Decorators\Timer.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckHasTarget.cs" />
+     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+     <Compile Include="Assets\Scripts\BT\Node.cs" />
+     <Compile Include="Assets\Scripts\BT\Task\TaskFollow.cs" />
+     <Compile Include="Assets\Scripts\UI\BuildingButton.cs" />
+     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+     <Compile Include="Assets\Scripts\ResourceValue.cs" />
+     <Compile Include="Assets\Scripts\Unit\Building\BuildingPlacer.cs" />
+     <Compile Include="Assets\Scripts\Utils.cs" />
+     <Compile Include="Assets\Scripts\BT\Task\TaskAttack.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckHasDestination.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckEnemyInFOVRange.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Parameters\GamePlayersParameters.cs" />
+     <Compile Include="Assets\Scripts\BT\Task\TaskTrySetDestination.cs" />
+     <Compile Include="Assets\Scripts\FogRendererToggler.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckUnitIsMine.cs" />
+     <Compile Include="Assets\Scripts\BT\BTs\CharacterBT.cs" />
+     <Compile Include="Assets\Scripts\Unit\Unit.cs" />
+     <Compile Include="Assets\Scripts\Unit\Character\CharacterManager.cs" />
+     <Compile Include="Assets\Scripts\DayAndNightCycler.cs" />
      <Compile Include="Assets\Scripts\GameResources.cs" />
-     <Compile Include="Assets\Scripts\Building.cs" />
+     <Compile Include="Assets\Scripts\BT\Task\TaskProduceResources.cs" />
+     <Compile Include="Assets\Scripts\Unit\Skill\SkillManager.cs" />
+     <Compile Include="Assets\Scripts\Unit\Building\Building.cs" />
+     <Compile Include="Assets\Scripts\BT\Tree.cs" />
+     <Compile Include="Assets\Scripts\UI\Minimap.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Parameters\GameSoundParameters.cs" />
+     <Compile Include="Assets\Scripts\Managers\SoundManager.cs" />
+     <Compile Include="Assets\Scripts\DataHandler.cs" />
      <Compile Include="Assets\Scripts\Globals.cs" />
-     <Compile Include="Assets\Scripts\BuildingManager.cs" />
-     <Compile Include="Assets\Scripts\UnitManager.cs" />
-     <Compile Include="Assets\Scripts\EventManager.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Parameters\GameGlobalParameters.cs" />
+     <Compile Include="Assets\Scripts\Unit\Building\BuildingManager.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Data\BuildingData.cs" />
+     <Compile Include="Assets\Scripts\BT\Composites\Selector.cs" />
+     <Compile Include="Assets\Scripts\BT\BTs\BuildingBT.cs" />
+     <Compile Include="Assets\Scripts\BT\Composites\Sequence.cs" />
+     <Compile Include="Assets\Scripts\BT\Composites\Parallel.cs" />
+     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
+     <Compile Include="Assets\Scripts\JSONSerializableScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\Unit\Character\Character.cs" />
+     <Compile Include="Assets\Scripts\Unit\UnitManager.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckEnemyInAttackRange.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Parameters\GameParameters.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Data\CharacterData.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\Data\SkillData.cs" />
+     <Compile Include="Assets\Scripts\Managers\EventManager.cs" />
+     <Compile Include="Assets\Scripts\BT\Decorators\Inverter.cs" />
+     <Compile Include="Assets\Scripts\BT\Check\CheckTargetIsMine.cs" />
+     <Compile Include="Assets\Scripts\CustomModifierGetter.cs" />
+     <None Include="Assets\Resources\Shader\AlphaProjection.shader" />
      <None Include="Assets\Resources\Shader\ProjectorAdditiveTint.shader" />
+     <None Include="Assets\Resources\Shader\UnitLevelUp.shader" />
  <Reference Include="UnityEngine">
  <HintPath>/home/koolguy/Unity/Hub/Editor/2020.3.24f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
@@ -633,6 +680,9 @@
  <Reference Include="Unity.VisualStudio.Editor">
  <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.VisualStudio.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Sysroot.Linux_x86_64">
+ <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -641,6 +691,9 @@
  </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Toolchain.Linux-x86_64">
+ <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.Toolchain.Linux-x86_64.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -654,8 +707,21 @@
  <Reference Include="UnityEngine.UI">
  <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.SysrootPackage.Editor">
+ <HintPath>/home/koolguy/Creation/Champions Blood Testingground/Library/ScriptAssemblies/Unity.SysrootPackage.Editor.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="NavMeshComponentsEditor.csproj">
+      <Project>{65F2A9FD-3235-9DC0-398A-4DE3AE862EAC}</Project>
+      <Name>NavMeshComponentsEditor</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="NavMeshComponents.csproj">
+      <Project>{DD86C84A-A9ED-97A0-B443-4B23169B2893}</Project>
+      <Name>NavMeshComponents</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

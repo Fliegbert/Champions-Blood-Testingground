@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Global Parameters", menuName = "Scriptable Objects/Game Global Parameters", order = 10)]
@@ -14,6 +15,11 @@ public class GameGlobalParameters : GameParameters
 
     [Header("Units")]
     public BuildingData initialBuilding;
+    public AnimationCurve experienceEvolutionCurve;
+    public AnimationCurve productionMultiplierCurve;
+    public AnimationCurve attackDamageMultiplierCurve;
+    public AnimationCurve attackRangeMultiplierCurve;
+    public AudioClip onLevelUpSound;
 
     [Header("Units production")]
     public int baseGoldProduction;
@@ -34,4 +40,10 @@ public class GameGlobalParameters : GameParameters
 
     [Header("FOV")]
     public bool enableFOV;
+
+    public int UnitMaxLevel()
+    {
+       Keyframe[] keys = experienceEvolutionCurve.keys;
+       return (int)keys.Select(k => k.time).Max();
+    }
 }

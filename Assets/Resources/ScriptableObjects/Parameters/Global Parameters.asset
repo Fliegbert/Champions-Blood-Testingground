@@ -18,7 +18,113 @@ MonoBehaviour:
   enableDayAndNightCycle: 1
   dayLengthInSeconds: 60
   dayInitialRatio: 0.2
-  initialBuilding: {fileID: 2800000, guid: 5a6ebbaf6b2a149cea97867b5c66808a, type: 3}
+  initialBuilding: {fileID: 21300000, guid: cc33d7a5a505a4aefb7fc43f8df89a96, type: 3}
+  experienceEvolutionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2.9906044
+      inSlope: -0.01334356
+      outSlope: -0.01334356
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.055227164
+    - serializedVersion: 3
+      time: 3.9956055
+      value: 9.989532
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  productionMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.013940676
+      outSlope: 0.013940676
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.47525725
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.023816653
+      outSlope: 0.023816653
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23213041
+      outWeight: 0
+    - serializedVersion: 3
+      time: 2.000471
+      value: 2.0035124
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackDamageMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3.0002747
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 3.995758
+      value: 10.01001
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackRangeMultiplierCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3.0061646
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 3.995163
+      value: 9.998718
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  onLevelUpSound: {fileID: 8300000, guid: 489d24d4ac4af620baddc16b2fa4f611, type: 3}
   baseGoldProduction: 5
   bonusGoldProductionPerBuilding: 2
   goldBonusRange: 10

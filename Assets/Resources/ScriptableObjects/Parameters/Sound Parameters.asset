@@ -15,8 +15,8 @@ MonoBehaviour:
   _fieldsToShowInGame:
   - sfxVolume
   - musicVolume
-  onDayStartSound: {fileID: 8300000, guid: 2e2eb14a7b86dadf48cfc1c73d3d8f04, type: 3}
-  onNightStartSound: {fileID: 8300000, guid: cd52f8b3aca11fdacab229636600270b, type: 3}
-  onBuildingPlacedSound: {fileID: 8300000, guid: ccc65dc2a4e67fc00a255e31f66df064, type: 3}
+  onDayStartSound: {fileID: 100100000, guid: fbd328ac21574b012ba098d8227b438f, type: 3}
+  onNightStartSound: {fileID: 3401051266149527884, guid: fbd328ac21574b012ba098d8227b438f, type: 3}
+  onBuildingPlacedSound: {fileID: 0}
   musicVolume: -23
   sfxVolume: -3
