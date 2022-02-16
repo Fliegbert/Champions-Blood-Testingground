@@ -1,27 +1,27 @@
+using System.Collections;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Audio;
-using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
-     public AudioSource audioSource;
-     public GameSoundParameters soundParameters;
-     public AudioMixerSnapshot paused;
-     public AudioMixerSnapshot unpaused;
-     public AudioMixer masterMixer;
+    public AudioSource audioSource;
+    public GameSoundParameters soundParameters;
 
-     private void Start()
+    public AudioMixer masterMixer;
+
+    private void Start()
     {
         masterMixer.SetFloat("musicVol", soundParameters.musicVolume);
         masterMixer.SetFloat("sfxVol", soundParameters.sfxVolume);
     }
 
-     private void OnEnable()
+    private void OnEnable()
     {
         EventManager.AddListener("PlaySoundByName", _OnPlaySoundByName);
         EventManager.AddListener("PauseGame", _OnPauseGame);
         EventManager.AddListener("ResumeGame", _OnResumeGame);
+
         EventManager.AddListener("UpdateGameParameter:musicVolume", _OnUpdateMusicVolume);
         EventManager.AddListener("UpdateGameParameter:sfxVolume", _OnUpdateSfxVolume);
     }
@@ -31,40 +31,21 @@ public class SoundManager : MonoBehaviour
         EventManager.RemoveListener("PlaySoundByName", _OnPlaySoundByName);
         EventManager.RemoveListener("PauseGame", _OnPauseGame);
         EventManager.RemoveListener("ResumeGame", _OnResumeGame);
+
         EventManager.RemoveListener("UpdateGameParameter:musicVolume", _OnUpdateMusicVolume);
         EventManager.RemoveListener("UpdateGameParameter:sfxVolume", _OnUpdateSfxVolume);
     }
 
     private void _OnPauseGame()
     {
-        StartCoroutine(_TransitioningVolume(
-          "musicVol",
-          soundParameters.musicVolume,
-          soundParameters.musicVolume - 6,
-          0.5f
-        ));
-        StartCoroutine(_TransitioningVolume(
-          "sfxVol",
-          soundParameters.sfxVolume,
-          -80,
-          0.5f
-        ));
+        StartCoroutine(_TransitioningVolume("musicVol", soundParameters.musicVolume, soundParameters.musicVolume - 6, 0.5f));
+        StartCoroutine(_TransitioningVolume("sfxVol", soundParameters.sfxVolume, -80, 0.5f));
     }
 
     private void _OnResumeGame()
     {
-        StartCoroutine(_TransitioningVolume(
-          "musicVol",
-          soundParameters.musicVolume - 6,
-          soundParameters.musicVolume,
-          0.5f
-        ));
-        StartCoroutine(_TransitioningVolume(
-          "sfxVol",
-          -80,
-          soundParameters.sfxVolume,
-          0.5f
-        ));
+        StartCoroutine(_TransitioningVolume("musicVol", soundParameters.musicVolume - 6, soundParameters.musicVolume, 0.5f));
+        StartCoroutine(_TransitioningVolume("sfxVol", -80, soundParameters.sfxVolume, 0.5f));
     }
 
     private IEnumerator _TransitioningVolume(string volumeParameter, float from, float to, float delay)
@@ -79,32 +60,32 @@ public class SoundManager : MonoBehaviour
         masterMixer.SetFloat(volumeParameter, to);
     }
 
-   private void _OnPlaySoundByName(object data)
-   {
-       string clipName = (string) data;
+    private void _OnPlaySoundByName(object data)
+    {
+        string clipName = (string) data;
 
-       // try to find the clip in the parameters
-       FieldInfo[] fields = typeof(GameSoundParameters).GetFields();
-       AudioClip clip = null;
-       foreach (FieldInfo field in fields)
-       {
-           if (field.Name == clipName)
-           {
-               clip = (AudioClip) field.GetValue(soundParameters);
-               break;
-           }
-       }
-       if (clip == null)
-       {
-           Debug.LogWarning($"Unknown clip name: '{clipName}'");
-           return;
-       }
+        // try to find the clip in the parameters
+        FieldInfo[] fields = typeof(GameSoundParameters).GetFields();
+        AudioClip clip = null;
+        foreach (FieldInfo field in fields)
+        {
+            if (field.Name == clipName)
+            {
+                clip = (AudioClip) field.GetValue(soundParameters);
+                break;
+            }
+        }
+        if (clip == null)
+        {
+            Debug.LogWarning($"Unknown clip name: '{clipName}'");
+            return;
+        }
 
-       // play the clip
-       audioSource.PlayOneShot(clip);
-   }
+        // play the clip
+        audioSource.PlayOneShot(clip);
+    }
 
-   private void _OnUpdateMusicVolume(object data)
+    private void _OnUpdateMusicVolume(object data)
     {
         float volume = (float)data;
         masterMixer.SetFloat("musicVol", volume);

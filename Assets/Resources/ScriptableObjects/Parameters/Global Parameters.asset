@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e657c09bfbf3d62bb2d886a7a04320, type: 3}
   m_Name: Global Parameters
   m_EditorClassIdentifier: 
+  _fieldsToSerialize: []
   _fieldsToShowInGame:
   - enableDayAndNightCycle
   - enableFOV

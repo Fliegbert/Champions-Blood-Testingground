@@ -10,22 +10,15 @@ public enum InGameResource
 }
 
 public static class Globals
-{   //All necessary Layermasks to work with
+{
     public static int TERRAIN_LAYER_MASK = 1 << 3;
     public static int FLAT_TERRAIN_LAYER_MASK = 1 << 10;
     public static int UNIT_MASK = 1 << 12;
     public static int TREE_MASK = 1 << 13;
     public static int ROCK_MASK = 1 << 14;
 
-    //start of all InGameResources
-    public static Dictionary<InGameResource, GameResource> GAME_RESOURCES = new Dictionary<InGameResource, GameResource>()
-    {
-        { InGameResource.Gold, new GameResource("Gold", 1000) },
-        { InGameResource.Wood, new GameResource("Wood", 1000) },
-        { InGameResource.Stone, new GameResource("Stone", 1000) }
-    };
+    public static Dictionary<InGameResource, GameResource>[] GAME_RESOURCES;
 
-    //Conversion Table
     public static Dictionary<InGameResource, int> XP_CONVERSION_TO_RESOURCE = new Dictionary<InGameResource, int>()
     {
         { InGameResource.Gold, 100 },
@@ -33,7 +26,41 @@ public static class Globals
         { InGameResource.Stone, 40 }
     };
 
-    //Conversion Table
+    public static BuildingData[] BUILDING_DATA;
+    public static Dictionary<string, SkillData> SKILL_DATA = new Dictionary<string, SkillData>();
+    public static List<UnitManager> SELECTED_UNITS = new List<UnitManager>();
+
+    public static NavMeshSurface NAV_MESH_SURFACE;
+
+    public static void UpdateNavMeshSurface()
+    {
+        NAV_MESH_SURFACE.UpdateNavMesh(NAV_MESH_SURFACE.navMeshData);
+    }
+
+    public static void InitializeGameResources(int nPlayers)
+    {
+        GAME_RESOURCES = new Dictionary<InGameResource, GameResource>[nPlayers];
+        for (int i = 0; i < nPlayers; i++)
+            GAME_RESOURCES[i] = new Dictionary<InGameResource, GameResource>()
+                {
+                    { InGameResource.Gold, new GameResource("Gold", 1000) },
+                    { InGameResource.Wood, new GameResource("Wood", 1000) },
+                    { InGameResource.Stone, new GameResource("Stone", 1000) }
+                };
+    }
+
+    public static bool CanBuy(List<ResourceValue> cost)
+    {
+        return CanBuy(GameManager.instance.gamePlayersParameters.myPlayerId, cost);
+    }
+    public static bool CanBuy(int playerId, List<ResourceValue> cost)
+    {
+        foreach (ResourceValue resource in cost)
+            if (GAME_RESOURCES[playerId][resource.code].Amount < resource.amount)
+                return false;
+        return true;
+    }
+
     public static List<ResourceValue> ConvertXPCostToGameResources(int xpCost, IEnumerable<InGameResource> allowedResources)
     {
         // distribute the xp cost between all possible resources, always
@@ -66,30 +93,5 @@ public static class Globals
         return xpCostToResources
             .Select(pair => new ResourceValue(pair.Key, pair.Value * XP_CONVERSION_TO_RESOURCE[pair.Key]))
             .ToList();
-    }
-
-
-    //Array of the buildings
-    //Dictionary of the Skills
-    //List of all selected units
-    public static BuildingData[] BUILDING_DATA;
-    public static Dictionary<string, SkillData> SKILL_DATA = new Dictionary<string, SkillData>();
-    public static List<UnitManager> SELECTED_UNITS = new List<UnitManager>();
-
-    //NavMeshSurface
-    public static NavMeshSurface NAV_MESH_SURFACE;
-
-    //to update the surface
-    public static void UpdateNavMeshSurface()
-    {
-        NAV_MESH_SURFACE.UpdateNavMesh(NAV_MESH_SURFACE.navMeshData);
-    }
-
-    public static bool CanBuy(List<ResourceValue> cost)
-    {
-        foreach (ResourceValue resource in cost)
-            if (GAME_RESOURCES[resource.code].Amount < resource.amount)
-                return false;
-        return true;
     }
 }

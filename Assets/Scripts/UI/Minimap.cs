@@ -10,10 +10,14 @@ public class Minimap : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Vector2 _lastPointerPosition;
     private bool _dragging = false;
 
+    public RectTransform minimapContainerRectTransform;
+    private Vector2 _offset;
+
     private void Start()
     {
         _uiSize = GetComponent<RectTransform>().sizeDelta;
         _lastPointerPosition = Input.mousePosition;
+        _offset = minimapContainerRectTransform.anchoredPosition;
     }
 
     private void Update()
@@ -25,7 +29,7 @@ public class Minimap : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (delta.magnitude > Mathf.Epsilon)
         {
-            Vector2 uiPos = Input.mousePosition;
+            Vector2 uiPos = ( new Vector2(Input.mousePosition.x, Input.mousePosition.y) - _offset) / GameManager.instance.canvasScaleFactor;
             Vector3 realPos = new Vector3(
                 uiPos.x / _uiSize.x * terrainSize.x,
                 0f,

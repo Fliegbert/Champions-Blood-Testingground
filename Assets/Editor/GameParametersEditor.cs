@@ -5,13 +5,19 @@ using UnityEditor;
 [CustomEditor(typeof(GameParameters), true)]
 public class GameParametersEditor : Editor
 {
+    private GUIStyle _buttonsStyle;
+
     public override void OnInspectorGUI()
     {
-        // get latest version of the asset
+        if (_buttonsStyle == null)
+        {
+            _buttonsStyle = new GUIStyle(GUI.skin.button);
+            _buttonsStyle.padding.right = 0;
+            _buttonsStyle.padding.left = 0;
+        }
+
         serializedObject.Update();
 
-        // automatically list all of its properties
-        // (+ display the display name at the top of the Inspector)
         GameParameters parameters = (GameParameters)target;
 
         EditorGUILayout.LabelField($"Name: {parameters.GetParametersName()}", EditorStyles.boldLabel);
@@ -25,30 +31,46 @@ public class GameParametersEditor : Editor
             if (System.Attribute.IsDefined(field, typeof(HideInInspector), false))
                 continue;
 
-            // make a row
             EditorGUILayout.BeginHorizontal();
-            // 1. display the custom toggle button
-            // (little trick to have the button stick to the bottom of the row
-            // if there is a header on this property...)
-            EditorGUILayout.BeginVertical(GUILayout.Width(20f));
+            EditorGUILayout.BeginVertical(GUILayout.Width(40f));
+             //check for header attribute
             bool hasHeader = System.Attribute.IsDefined(field, typeof(HeaderAttribute), false);
             if (hasHeader)
                 GUILayout.FlexibleSpace();
-            if (GUILayout.Button(parameters.ShowsField(field.Name) ? "-" : "+", GUILayout.Width(20f)))
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(
+                parameters.ShowsField(field.Name)
+                    ? EditorGUIUtility.IconContent("animationvisibilitytoggleon@2x")
+                    : EditorGUIUtility.IconContent("d_animationvisibilitytoggleon@2x"),
+                _buttonsStyle,
+                GUILayout.Width(20f),
+                GUILayout.Height(20f)
+            ))
             {
                 parameters.ToggleShowField(field.Name);
                 EditorUtility.SetDirty(parameters);
                 AssetDatabase.SaveAssets();
             }
+            if (GUILayout.Button(
+                parameters.SerializesField(field.Name)
+                    ? EditorGUIUtility.IconContent("SaveAs@2x")
+                    : EditorGUIUtility.IconContent("d_SaveAs@2x"),
+                _buttonsStyle,
+                GUILayout.Width(20f),
+                GUILayout.Height(20f)
+            ))
+            {
+                parameters.ToggleSerializeField(field.Name);
+                EditorUtility.SetDirty(parameters);
+                AssetDatabase.SaveAssets();
+            }
+            EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-            // 2. put some spacing between the button and the actual field display
             GUILayout.Space(16);
-            // 3. display the field with a type-dependent input
             EditorGUILayout.PropertyField(serializedObject.FindProperty(field.Name), true);
             EditorGUILayout.EndHorizontal();
         }
 
-        // save the changes in the inputs on this asset
         serializedObject.ApplyModifiedProperties();
     }
 }

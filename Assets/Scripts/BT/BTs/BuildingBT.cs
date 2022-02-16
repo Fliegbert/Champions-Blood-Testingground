@@ -36,7 +36,7 @@ public class BuildingBT : Tree
         }
 
         _root.Attach(new Sequence(new List<Node> {
-            new CheckUnitIsMine(manager),
+            // (remove the CheckUnitIsMine node)
             new Timer(
                 GameManager.instance.producingRate,
                 new List<Node>()

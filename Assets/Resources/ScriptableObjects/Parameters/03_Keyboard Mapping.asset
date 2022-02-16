@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818cb3bc3c9321d4bad79eb66491c3d9, type: 3}
   m_Name: 03_Keyboard Mapping
   m_EditorClassIdentifier: 
+  _fieldsToSerialize:
+  - bindings
   _fieldsToShowInGame:
   - bindings
   bindings:
   - displayName: Build a hut
     key: h
     inputEvent: Build:hut
+  - displayName: Build a hut
+    key: '#'
+    inputEvent: ShowDebugConsole
