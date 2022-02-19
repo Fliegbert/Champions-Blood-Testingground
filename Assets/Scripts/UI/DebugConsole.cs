@@ -133,6 +133,17 @@ public class DebugConsole : MonoBehaviour
                     if (int.TryParse(inputParts[1], out i))
                         dcInt.Invoke(i);
                 }
+                if (command is DebugCommand<string, int> dcStringInt)
+                {
+                    int i;
+                    if (int.TryParse(inputParts[2], out i))
+                        dcStringInt.Invoke(inputParts[1], i);
+                    else
+                    {
+                        Debug.LogError($"'{command.Id}' requires a string and an int parameter!");
+                        return;
+                    }
+                }
             }
         }
     }
@@ -148,6 +159,31 @@ public class DebugConsole : MonoBehaviour
         new DebugCommand("?", "Lists all available debug commands.", "?", () =>
         {
             _displayType = DisplayType.Help;
+        });
+        new DebugCommand<string, int>(
+            "instantiate_characters",
+            "Instantiates multiple instances of a character unit (by reference code), using a Poisson disc sampling for random positioning.",
+            "instantiate_characters <code> <amount>", (code, amount) =>
+        {
+            CharacterData d = Globals.CHARACTER_DATA[code];
+            int owner = GameManager.instance.gamePlayersParameters.myPlayerId;
+            List<Vector3> positions = Utils.SamplePositions(
+              amount, 1.5f, Vector2.one * 15,
+              Utils.MiddleOfScreenPointToWorld());
+            foreach (Vector3 pos in positions)
+            {
+                Character c = new Character(d, owner);
+                c.ComputeProduction();
+                c.Transform.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(pos);
+            }
+        });
+        new DebugCommand<int>(
+          "set_unit_formation_type",
+          "Sets the unit formation type (by index).",
+          "set_unit_formation_type <formation_index>", (x) =>
+        {
+            Globals.UNIT_FORMATION_TYPE = (UnitFormationType)x;
+            EventManager.TriggerEvent("UpdateUnitFormationType");
         });
     }
 }

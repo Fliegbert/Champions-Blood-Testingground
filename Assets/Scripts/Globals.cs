@@ -9,6 +9,14 @@ public enum InGameResource
     Stone
 }
 
+public enum UnitFormationType
+{
+    None,
+    Line,
+    Grid,
+    XCross
+}
+
 public static class Globals
 {
     public static int TERRAIN_LAYER_MASK = 1 << 3;
@@ -94,4 +102,7 @@ public static class Globals
             .Select(pair => new ResourceValue(pair.Key, pair.Value * XP_CONVERSION_TO_RESOURCE[pair.Key]))
             .ToList();
     }
+
+    public static Dictionary<string, CharacterData> CHARACTER_DATA = new Dictionary<string, CharacterData>();
+    public static UnitFormationType UNIT_FORMATION_TYPE = UnitFormationType.None;
 }
